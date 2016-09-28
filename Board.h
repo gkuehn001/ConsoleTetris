@@ -21,6 +21,8 @@ public:
 	void Render() const;
 	void Update(long _gameStep);
 
+	void ToggleNext();
+
 	CPoint2D Position;
 	int Width;
 	int Height;
@@ -47,5 +49,6 @@ private:
 	int m_iNextTileY;
 
 	bool m_bDrop;
+	bool m_bShowNext;
 };
 

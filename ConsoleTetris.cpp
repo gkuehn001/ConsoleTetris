@@ -38,10 +38,10 @@ private:
 
 static void Render(const CBoard & _board)
 {
+	CDebug::Render();
 	//clear();
 	_board.Render();
 	//CDebug::Output();
-	CDebug::Render();
 	refresh();
 }
 
@@ -70,6 +70,8 @@ static int ConsoleTetris()
 	long gameStep = 0;
 	bool bPaused = false;
 
+	CDebug::SetDebugOutput("\nMove - Left, Right\nTurn - Up, Down\nDrop - Space\n\nToggle Next - t\nToggle Pause - p\n\nExit - Escape");
+
 	while (running)
 	{
 
@@ -77,7 +79,7 @@ static int ConsoleTetris()
 		{
 			elapsedLast += 0.01;
 			myBoard.Update(++gameStep);
-			CDebug::SetDebugOutput("%d", gameStep);
+			//CDebug::SetDebugOutput("%d", gameStep);
 		}
 
 		int ch = wgetch(stdscr);
@@ -112,6 +114,9 @@ static int ConsoleTetris()
 				elapsedLast = elapsedLast - (double)((int)elapsedLast);
 				t.reset();
 			}
+			break;
+		case 't':
+			myBoard.ToggleNext();
 			break;
 		}
 		if (!bPaused) Render(myBoard);

@@ -34,6 +34,7 @@ CBoard::CBoard(int _x, int _y, int _width, int _height)
 
 	m_iNextTileX = 0; // _x - 15;
 	m_iNextTileY = 0; // (_y + _height) / 2 - 15;
+	m_bShowNext = true;
 }
 
 
@@ -106,7 +107,7 @@ void CBoard::Render() const
 				c2 = (char)46;
 			}
 
-			mvaddch(BaseDefinitions::FieldPositionY + y, BaseDefinitions::FieldPositionX + (x * BaseDefinitions::ScaleX), c1);	
+			mvaddch(BaseDefinitions::FieldPositionY + y, BaseDefinitions::FieldPositionX + (x * BaseDefinitions::ScaleX), c1);
 			mvaddch(BaseDefinitions::FieldPositionY + y, BaseDefinitions::FieldPositionX + (x * BaseDefinitions::ScaleX) + 1, c2);
 		}
 	}
@@ -114,6 +115,7 @@ void CBoard::Render() const
 	{
 		m_pCurrentTile->Render(false);
 	}
+
 
 	for (int y = BaseDefinitions::PreviewTileY; y < BaseDefinitions::PreviewTileY + 4; y++)
 	{
@@ -123,9 +125,12 @@ void CBoard::Render() const
 		}
 	}
 
-	if (m_pNextTile != NULL)
+	if (m_bShowNext)
 	{
-		m_pNextTile->Render(true);
+		if (m_pNextTile != NULL)
+		{
+			m_pNextTile->Render(true);
+		}
 	}
 }
 
@@ -392,4 +397,9 @@ void CBoard::CheckFullRows()
 		}
 	}
 
+}
+
+void CBoard::ToggleNext()
+{
+	m_bShowNext = !m_bShowNext;
 }
