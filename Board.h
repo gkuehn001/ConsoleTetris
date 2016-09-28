@@ -32,11 +32,14 @@ public:
 	CTile* m_pCurrentTile;
 	CTile* m_pNextTile;
 
+	bool m_bGameOver;
+
 private:
 	void InitTiles();
 	void CreateTile();
 	void FixCurrentTile();
 	void CheckFullRows();
+	bool IsUserInputValid();
 
 	std::vector<__int64> m_vOccupiedFields;
 
