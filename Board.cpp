@@ -2,6 +2,7 @@
 #include "Board.h"
 #include "BaseDefinitions.h"
 #include <time.h>
+#include <string>
 
 CBoard::CBoard()
 {
@@ -35,6 +36,7 @@ CBoard::CBoard(int _x, int _y, int _width, int _height)
 	m_iNextTileX = 0; // _x - 15;
 	m_iNextTileY = 0; // (_y + _height) / 2 - 15;
 	m_bShowNext = true;
+	m_bGameOver = false;
 }
 
 
@@ -47,9 +49,14 @@ CBoard::~CBoard()
 	}
 }
 
+bool CBoard::IsUserInputValid()
+{
+	return (m_pCurrentTile != NULL && !m_bDrop && !m_bGameOver);
+}
+
 void CBoard::OnKeyUp()
 {
-	if (m_pCurrentTile != NULL && !m_bDrop)
+	if (IsUserInputValid())
 	{
 		m_pCurrentTile->PreviousVariation(m_vOccupiedFields);
 	}
@@ -57,7 +64,7 @@ void CBoard::OnKeyUp()
 
 void CBoard::OnKeyDown()
 {
-	if (m_pCurrentTile != NULL && !m_bDrop)
+	if (IsUserInputValid())
 	{
 		m_pCurrentTile->NextVariation(m_vOccupiedFields);
 	}
@@ -65,7 +72,7 @@ void CBoard::OnKeyDown()
 
 void CBoard::OnKeyRight()
 {
-	if (m_pCurrentTile != NULL && !m_bDrop)
+	if (IsUserInputValid())
 	{
 		m_pCurrentTile->Move(1, 0, m_vOccupiedFields);
 	}
@@ -73,7 +80,7 @@ void CBoard::OnKeyRight()
 
 void CBoard::OnKeyLeft()
 {
-	if (m_pCurrentTile != NULL && !m_bDrop)
+	if (IsUserInputValid())
 	{
 		m_pCurrentTile->Move(-1, 0, m_vOccupiedFields);
 	}
@@ -132,11 +139,23 @@ void CBoard::Render() const
 			m_pNextTile->Render(true);
 		}
 	}
+
+	if (m_bGameOver)
+	{
+		
+		std::string gameOver = "* Game Over *";
+		std::string gmovLine = "*************";
+		int x = BaseDefinitions::FieldPositionX + (BaseDefinitions::FieldWidth / 2) - 1;
+		int y = BaseDefinitions::FieldPositionY + (BaseDefinitions::FieldHeight / 2) - 1;
+		mvaddstr(y-1, x, gmovLine.c_str());
+		mvaddstr(y, x, gameOver.c_str());
+		mvaddstr(y+1, x, gmovLine.c_str());
+	}
 }
 
 void CBoard::Update(long _gameStep)
 {
-	if (m_pCurrentTile != NULL)
+	if (m_pCurrentTile != NULL && !m_bGameOver)
 	{
 		if (_gameStep > m_iNextFallStep)
 		{
@@ -145,7 +164,16 @@ void CBoard::Update(long _gameStep)
 				FixCurrentTile();
 				CheckFullRows();
 				CreateTile();
-				m_iNextFallStep = _gameStep + m_iFallSpeed;
+
+				// check if new tile is overlapping already -> if so: game over
+				if (!m_pCurrentTile->CheckValidTilePosition(*(m_pCurrentTile->m_pCurrentVariation), m_pCurrentTile->Position, m_vOccupiedFields))
+				{
+					m_bGameOver = true;
+				}
+				else
+				{
+					m_iNextFallStep = _gameStep + m_iFallSpeed;
+				}
 			}
 			else
 			{
@@ -401,5 +429,8 @@ void CBoard::CheckFullRows()
 
 void CBoard::ToggleNext()
 {
-	m_bShowNext = !m_bShowNext;
+	if (IsUserInputValid())
+	{
+		m_bShowNext = !m_bShowNext;
+	}
 }
