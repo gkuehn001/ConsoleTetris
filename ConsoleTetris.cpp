@@ -39,9 +39,10 @@ private:
 static void Render(const CBoard & _board)
 {
 	CDebug::Render();
-	//clear();
+	mvaddstr(1, 0, BaseDefinitions::Manual);
 	_board.Render();
-	//CDebug::Output();
+	CDebug::Output();
+	
 	refresh();
 }
 
@@ -49,13 +50,10 @@ static int ConsoleTetris()
 {
 	initscr();
 	noecho();
-	//cbreak();
-	// setup curses
 	curs_set(0);
 	keypad(stdscr, true);
 	refresh();
 	nodelay(stdscr, true);
-	//timeout(1);
 	int row = 3;
 	int col = 3;
 	bool running = true;
@@ -69,8 +67,6 @@ static int ConsoleTetris()
 	t.reset();
 	long gameStep = 0;
 	bool bPaused = false;
-
-	CDebug::SetDebugOutput("\nMove - Left, Right\nTurn - Up, Down\nDrop - Space\n\nToggle Next - t\nToggle Pause - p\n\nExit - Escape");
 
 	while (running)
 	{

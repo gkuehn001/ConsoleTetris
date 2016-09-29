@@ -10,4 +10,5 @@ namespace BaseDefinitions
 	static int ScaleY = 1;
 	static int PreviewTileX = 20;
 	static int PreviewTileY = 10;
+	static const char* Manual = "\nMove - Left, Right\nTurn - Up, Down\nDrop - Space\n\nToggle Next - t\nToggle Pause - p\n\nExit - Escape";
 }
