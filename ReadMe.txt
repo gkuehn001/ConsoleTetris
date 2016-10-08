@@ -9,6 +9,6 @@ It is created without a fancy GUI as a pure console application.
 The graphical representation of the game state is done by using PDCurses (Public Domain Curses)
 https://sourceforge.net/projects/pdcurses/
 
-Feel free to use the code or contribute to the project.
+MIT License: https://opensource.org/licenses/MIT
 
 /////////////////////////////////////////////////////////////////////////////
