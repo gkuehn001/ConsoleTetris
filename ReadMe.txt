@@ -2,12 +2,15 @@
                   ConsoleTetris - Project Overview
 ========================================================================
 
-This project started as a test project to get familiar with the C++ programming language.
+ConsoleTetris a test project for C++ and git submodules.
 
-It is created without a fancy GUI as a pure console application.
+No fancy GUI, just console.
 
-The graphical representation of the game state is created with PDCurses (Public Domain Curses):
-https://sourceforge.net/projects/pdcurses/
+Build solution with Visual Studio 2019.
+https://visualstudio.microsoft.com/de/downloads/
+
+Created with PDCurses (Public Domain Curses):
+https://github.com/wmcbrine/PDCurses
 
 MIT License: 
 https://opensource.org/licenses/MIT
